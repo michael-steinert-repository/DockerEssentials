@@ -1,11 +1,21 @@
 # Docker
 
-* Docker is a Platform for building, running and shipping Applcations
-* It makes it easily to build and deploy Applcations running in Containers
-* A Container is a running Instance of an Applcation
+* Docker is a Platform for building, running and shipping Applications
+* It makes it easily to build and deploy Applications running in Containers
+* A Container is a running Instance of an Application
 * An Application is packed up in a Container so the local Development is the same across any Environment
 
-## Container vs. VM
+## Docker Components
+* Docker is using the following Features from the Unix Kernel:
+* __cgroups__: 
+  * cgroups restricts and isolates Resource Usage from a Collection of Processes
+  * cgroups allow Quotas to be defined at the Process Level
+  * Restrictions are placed on the Resource Usage of the Quotas
+* __Namespaces__:
+  * Namespaces enables independent Process Management
+* The Combination of __cgroups__ and __Namespaces__ allows to isolate a Process and limit its Resources without having the Overhead of a Virtual Machine (VM)
+
+## Container vs. Virtual Machine
 
 ### Virtual Machine
 
@@ -19,11 +29,11 @@
 
 ### Container
 
-* Containers are an Abstraction at the Applcation Layer that packages Code and Dependencies together
+* Containers are an Abstraction at the Application Layer that packages Code and Dependencies together
 * Multiple Containers can run on the same Machine and share the Operating System Kernel
-* A Containers is an isolated Environment for running Applcation
+* A Container is an isolated Environment for running Application
 * Each Container runs as isolated Processes in the User Space
-* A Container contains everything an Applcation needs (for Example the Operating System and Configurations)
+* A Container contains everything an Application needs (for Example the Operating System and Configurations)
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/29623199/133127358-9b10c4d4-a74a-4630-9730-b400ad8e3af9.JPG" alt="Containers Overview" width="50%"/>
@@ -46,7 +56,7 @@
 
 ## Docker Volumes
 
-* Volumes allow Data to be shared between Containers (and Contaienr) and Host
+* Volumes allow Data to be shared between Containers (and Container) and Host
 * With Volumes can Data be kept after Containers stopped running
 * __bind mount__: A Bind Mount allows the Host to share it own File System with the
   Container ```-v host-path:container:path```
@@ -60,7 +70,7 @@
 ## Docker Architecture
 
 * The Docker Architecture follows the Client-Server Approach
-* The Client is the used CLI (Terminal) and Server is the Docker Host (Hosting System of Docker)
+* The Client is the used CLI (Command Line Interface - Terminal) and Server is the Docker Host (Hosting System of Docker)
 * The Docker Daemon on the Server is responsible to handle Commands from the Client
 * The Docker Daemon fetches Images from local or remote Registries, and stores it on the Server (Hosting System of
   Docker)
@@ -78,9 +88,9 @@
 
 * Docker Registries are a Storage and Distribution System for Docker Images
 * Images can be pulled or pushed into Docker Registries
-* Docker Registries can be public or private
-    * Public Registries are aviable for everyone
-    * Private Registries are only aviable for the Owners
+* Docker Registries can be public or private:
+    * Public Registries are available for everyone
+    * Private Registries are only available for the Owners
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/29623199/133730387-a9315406-0915-42f7-b825-ba06d63ee412.JPG" alt="Docker Registry" width="50%"/>
@@ -88,9 +98,9 @@
 
 ## Docker Network
 
-* A Docker Network allows to communicate Containers between eachother
+* A Docker Network allows communicating Containers between each other
 * First a Docker Network it created then it is attached to the Containers
-* In Docker Networks, the Cotnainer Name corresponds to the Host Name
+* In Docker Networks, the Container Name corresponds to the Host Name
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/29623199/133881078-e5b287e6-f7fe-4531-903a-ca015d7564c4.JPG" alt="Docker Registry" width="50%"/>
@@ -118,7 +128,7 @@ docker network rm my-network
 
 * Bridge(default): Bridge Networks are used when Applications run in standalone Containers that need to communicate
 * Host: For standalone Containers, remove Network Isolation between the Container and the Docker Host, and use the
-  Host’s networking directly
+  Host’s Networking directly
 * Overlay: Overlay Networks connect multiple Docker Daemons together and enable Swarm Services to communicate with each
   other
 * Macvlan: Macvlan Networks allow to assign a MAC address to a Container, making it appear as a physical Device on the
@@ -140,7 +150,7 @@ docker network rm my-network
 | docker exec ID env                                                                | Gets the Environment Variables of the Container                                                                                                                                                |
 | docker exec ID ls                                                                 | Lists Files from Working Directory of the Container                                                                                                                                            |
 |                                                                                   |                                                                                                                                                                                                |
-| docker run --name name IMAGE                                                      | Names the Cotnainer with the given Name "name"                                                                                                                                                 |
+| docker run --name name IMAGE                                                      | Names the Container with the given Name "name"                                                                                                                                                 |
 | docker run -p 81:80 IMAGE                                                         | Exposes the Port on the Host to Port 80 inside the Cotnainer                                                                                                                                   |
 | docker run -d IMAGE                                                               | Runs the Container in Background and prints its ID                                                                                                                                             |
 |                                                                                   |                                                                                                                                                                                                |
@@ -173,18 +183,19 @@ COPY . /tmp
 * Setting the Base Image "nginx" and copy all Files from the Source (current Directory) inside the Container "/tmp"
 
 ```docker
-docker build ./Dockerfile -t customImage
+docker build . -t customImage
 docker run --name customName -d customImage
 ```
 
-* Builds a Docker Image from the given Dockerfile
-* Runs a Container from a given Image |Command|Description| ||| |docker run -w /src -v $PWD:/src --rm node npm init
-  --yes|Creates a Container with the Working Directory "/src" and mount the current Fiels from the Host inside the
-  Container - Also execute the Command "npm init --yes" after the Container with Image "node" have started - After
-  stopping the Container it will be automatically removed| |docker run -w /src -v $PWD:/src --rm node npm install --save
-  express|Runs the Container, and install the NPM Package "express"|
+* Builds a Docker Image from the given Dockerfile - The Build Command needs a Directory where a Dockerfile exists as Input
+* Runs a Container from a given Image 
 
-* Same Commands as a Dockerfile:
+|Command|Description| 
+|---|---| 
+|docker run -w /src -v $PWD:/src --rm node npm init --yes| Creates a Container with the Working Directory "/src" and mount the current Files from the Host inside the Container - Also execute the Command "npm init --yes" after the Container with Image "node" have started - After stopping the Container it will be automatically removed| 
+|docker run -w /src -v $PWD:/src --rm node npm install --save express|Runs the Container, and install the NPM Package "express"|
+
+* Same Commands like above as a Dockerfile:
 
 ```docker
 FROM node
@@ -195,11 +206,11 @@ CMD["node", "server.js"]
 ```
 
 ```docker
-docker build ./Dockerfile -t express-image
+docker build . -t express-image
 docker run --name express-image -p 3000:3000 -d express-image
 ```
 
-* __ADD__: Adds all Fiels from current Host Folder to the Working Directory
+* __ADD__: Adds all Files from current Host Folder to the Working Directory
 * __RUN__: Executes the initial Command "npm install" with the given package.json (Package.json was copied by the
   Command "ADD")
 * __CMD__: Executes the Command "node server.js" to Start the Express Server (Dependencies were installed by initial
