@@ -47,7 +47,13 @@
 
 ### Image Layer
 
-* Layers are used to speed up to pull Images
+* Layers are Changes on Images (to their previous Version)
+* Everytime an Image is changed through the Docker Commands `RUN, COPY or ADD` a new Layer is added to it
+* They are used to speeding up the Building and Pulling of Images using a Cache
+
+### Multistage Build
+
+* A Multistage Build allows to define many Images in one Dockerfile
 
 ### Distroless Docker Images
 
@@ -190,10 +196,10 @@ docker run --name customName -d customImage
 * Builds a Docker Image from the given Dockerfile - The Build Command needs a Directory where a Dockerfile exists as Input
 * Runs a Container from a given Image 
 
-|Command|Description| 
-|---|---| 
-|docker run -w /src -v $PWD:/src --rm node npm init --yes| Creates a Container with the Working Directory "/src" and mount the current Files from the Host inside the Container - Also execute the Command "npm init --yes" after the Container with Image "node" have started - After stopping the Container it will be automatically removed| 
-|docker run -w /src -v $PWD:/src --rm node npm install --save express|Runs the Container, and install the NPM Package "express"|
+| Command                                                              | Description                                                                                                                                                                                                                                                                         | 
+|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| docker run -w /src -v $PWD:/src --rm node npm init --yes             | Creates a Container with the Working Directory "/src" and mount the current Files from the Host inside the Container - Also execute the Command "npm init --yes" after the Container with Image "node" have started - After stopping the Container it will be automatically removed | 
+| docker run -w /src -v $PWD:/src --rm node npm install --save express | Runs the Container, and install the NPM Package "express"                                                                                                                                                                                                                           |
 
 * Same Commands like above as a Dockerfile:
 
